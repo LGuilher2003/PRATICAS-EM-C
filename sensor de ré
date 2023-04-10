@@ -1,0 +1,74 @@
+#define trigP 10
+#define echoP 9
+
+float distancia;
+float tempo;
+
+int luzVermelha = 3;
+int luzAmarela = 4;
+int luzVerde = 5;
+int barulho = 6;
+
+void luz();
+
+
+void setup()
+{
+  Serial.begin(9600);
+  pinMode(luzVerde, OUTPUT);
+  pinMode(luzAmarela, OUTPUT);
+  pinMode(luzVermelha, OUTPUT);
+  pinMode(barulho, OUTPUT);
+  pinMode(trigP, OUTPUT);
+  pinMode(echoP, LOW);
+  
+}
+
+void loop()
+{
+  luz();
+  
+  distancia = tempo/58;
+  
+  Serial.println(distancia);
+  delay(1000);
+  if(distancia < 5) {
+    digitalWrite(luzVermelha, HIGH);
+    tone(barulho,1200,1200); 
+    delay(200);
+    noTone(barulho);
+  } else {
+    digitalWrite(luzVermelha, LOW);
+  }
+  if(distancia >= 5 && distancia <= 10) {
+    digitalWrite(luzAmarela, HIGH);
+    tone(barulho,1200,600); 
+    delay(400);
+    noTone(barulho);
+  } else{
+    digitalWrite(luzAmarela, LOW);
+  }
+  
+  if(distancia > 10 && distancia <= 25){
+    digitalWrite(luzVerde, HIGH);
+    tone(barulho,1200,1000); 
+    delay(600);
+    noTone(barulho); 
+    
+  } else{
+    digitalWrite(luzVerde, LOW);
+  }
+                           
+}
+
+void luz(){
+ pinMode(trigP, OUTPUT);
+ digitalWrite(trigP, HIGH);
+ delayMicroseconds(10);
+ digitalWrite(trigP, LOW);
+ 
+ pinMode(echoP, INPUT);
+ tempo = pulseIn(echoP, HIGH);
+
+}
+   
